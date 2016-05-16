@@ -10,12 +10,6 @@ func root(w http.ResponseWriter, r *http.Request) {
 	var ip string
 	rIp := r.Header["X-Real-Ip"]
 
-/*
-	for k, v := range r.Header {
-		fmt.Printf("%s: %s\n", k, v)
-	}
-*/
-
 	if len(rIp) == 0 {
 		ip = r.RemoteAddr[:strings.Index(r.RemoteAddr, ":")]
 	} else {
