@@ -2,23 +2,14 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
+	"strings"
 )
 
-func root(w http.ResponseWriter, r *http.Request) {
-	var ip string
-	rIp := r.Header["X-Real-Ip"]
-
-	if len(rIp) == 0 {
-		ip = r.RemoteAddr[:strings.Index(r.RemoteAddr, ":")]
-	} else {
-		ip = rIp[0]
-	}
-	fmt.Fprintf(w, "%s\n", ip)
-}
-
 func main() {
-	http.HandleFunc("/", root) 
-	http.ListenAndServe(":30001", nil)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintf(w, "%s\n", r.RemoteAddr[:strings.Index(r.RemoteAddr, ":")])
+	})
+
+	http.ListenAndServe(":8081", nil)
 }
